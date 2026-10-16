@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crema theme documentation</title>
+<meta name="description" content="How to set up and use Crema, the Shopify theme for specialty coffee roasters and cafés: styles, coffee metafields, sections, product page and selling features.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper: #f2eee6; --sheet: #fbf9f4; --ink: #1d1a17; --muted: #5f564d; --rule: #cfc6b8; --accent: #b0412a;
+    --body: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+    --data: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #191715; --sheet: #24211e; --ink: #f1ece4; --muted: #b3a899; --rule: #3a3531; --accent: #e3765c; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); }
+  a { color: inherit; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: 16px; top: 16px; background: var(--ink); color: var(--paper); padding: 8px 12px; z-index: 9; }
+
+  header.top { border-bottom: 1px solid var(--ink); padding: 18px max(20px, env(safe-area-inset-left)); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .brand { font-family: var(--data); font-size: 13px; letter-spacing: .32em; text-transform: uppercase; }
+  .brand b { font-weight: 400; color: var(--accent); }
+  .meta { font-family: var(--data); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+  .hero { padding: 56px max(20px, env(safe-area-inset-left)) 40px; border-bottom: 1px solid var(--rule); }
+  .hero h1 { margin: 0; max-width: 16ch; font-size: clamp(40px, 7vw, 84px); line-height: .95; letter-spacing: -.035em; font-weight: 600; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p { max-width: 62ch; color: var(--muted); margin: 22px 0 0; font-size: 18px; }
+  .stamp { display: inline-block; margin-top: 26px; padding: 5px 10px; border: 1px solid var(--accent); color: var(--accent); font-family: var(--data); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; transform: rotate(-2deg); }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 1240px; margin: 0 auto; }
+  nav.toc { padding: 28px 20px 0; }
+  nav.toc p { font-family: var(--data); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+  nav.toc li a { display: grid; grid-template-columns: 34px 1fr; padding: 9px 0; border-bottom: 1px solid var(--rule); text-decoration: none; font-size: 15px; }
+  nav.toc li a:hover { color: var(--accent); }
+  nav.toc .num { font-family: var(--data); font-size: 12px; color: var(--muted); padding-top: 2px; }
+  main { padding: 8px 20px 80px; min-width: 0; }
+  @media (min-width: 980px) {
+    .layout { grid-template-columns: 290px minmax(0, 1fr); gap: 64px; padding: 0 40px; }
+    nav.toc { position: sticky; top: 0; align-self: start; padding: 40px 0; max-height: 100vh; overflow-y: auto; }
+    main { padding: 8px 0 96px; }
+    .hero, header.top { padding-left: 40px; padding-right: 40px; }
+  }
+
+  main h2 { font-size: clamp(26px, 3vw, 34px); line-height: 1.1; letter-spacing: -.02em; font-weight: 600; margin: 64px 0 18px; padding-top: 18px; border-top: 1px solid var(--ink); }
+  main h3 { font-size: 19px; font-weight: 600; margin: 34px 0 10px; }
+  main p, main li { max-width: 72ch; }
+  main ul, main ol { padding-left: 1.2em; }
+  main li { margin: 6px 0; }
+  main strong { font-weight: 600; }
+  code { font-family: var(--data); font-size: .86em; background: var(--sheet); border: 1px solid var(--rule); padding: 1px 6px; }
+  .table { overflow-x: auto; margin: 18px 0; border: 1px solid var(--ink); background: var(--sheet); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+  th { font-family: var(--data); font-weight: 400; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom-color: var(--ink); }
+  tr:last-child td { border-bottom: 0; }
+  td + td, th + th { border-left: 1px solid var(--rule); }
+
+  footer { border-top: 1px solid var(--ink); padding: 22px max(20px, env(safe-area-inset-left)); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--data); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="top">
+  <span class="brand">Crema <b>·</b> Theme docs</span>
+  <span class="meta">Version 2.0.0 · DIGI STUDIO</span>
+</header>
+<section class="hero">
+  <h1>Crema, <em>roasted</em> for Shopify.</h1>
+  <p>Every bag presented like a roaster's lot sheet, with its roast date, freshness window and farm details, plus the tools a coffee shop needs: a roast calendar, a subscription planner, brew guides and a café menu that changes by store.</p>
+  <span class="stamp">Support: douglas41299@gmail.com</span>
+</section>
+<div class="layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol><li><a href="#getting-started"><span class="num">01</span>Getting started</a></li><li><a href="#theme-style"><span class="num">02</span>Theme style</a></li><li><a href="#coffee-details-with-metafields"><span class="num">03</span>Coffee details with metafields</a></li><li><a href="#theme-settings"><span class="num">04</span>Theme settings</a></li><li><a href="#home-page-sections"><span class="num">05</span>Home page sections</a></li><li><a href="#product-page"><span class="num">06</span>Product page</a></li><li><a href="#cafe-pages-stores-and-menu"><span class="num">07</span>Café pages: stores and menu</a></li><li><a href="#other-pages"><span class="num">08</span>Other pages</a></li><li><a href="#selling-features"><span class="num">09</span>Selling features</a></li><li><a href="#accessibility-and-performance"><span class="num">10</span>Accessibility and performance</a></li><li><a href="#faq"><span class="num">11</span>FAQ</a></li><li><a href="#credits"><span class="num">12</span>Credits</a></li></ol>
+  </nav>
+  <main id="content">
+<h2 id="getting-started">Getting started</h2>
+<ol>
+<li>Add the theme from the Theme Store, then choose <strong>Customize</strong>.</li>
+<li>Set your colors and fonts under <strong>Theme settings</strong> (see <a href="#theme-style">Theme style</a>).</li>
+<li>Add your coffees as products. For the lot sheet, freshness bar and roast stamp, create the coffee metafields described in <a href="#coffee-details-with-metafields">Coffee details</a>.</li>
+<li>Create collections for your coffees, seasonal lots and brewing gear, and choose them in the <strong>Product showcase</strong> section on the home page.</li>
+<li>Set your roast and ship days in <strong>Theme settings → Coffee</strong>. The announcement bar, product pages and cart then show the next roast and the order deadline.</li>
+</ol>
+<p>Sections that have no content yet show placeholder artwork in the theme editor, so you can see the layout before you fill it in.</p>
+<h2 id="theme-style">Theme style</h2>
+<p>Crema ships with one style, <strong>Shiro</strong>: a roaster's lot sheet in warm paper and ink with a terracotta accent, Work Sans with data set in a monospaced face, square corners and 4:5 product cards. Every color scheme meets WCAG AA contrast for text, secondary text, accent and buttons.</p>
+<p>Make it your own under <strong>Theme settings</strong>: five color schemes, heading and body fonts, corner radius, card shape and the animations.</p>
+<h2 id="coffee-details-with-metafields">Coffee details with metafields</h2>
+<p>Crema reads coffee details from product metafields. Create them in <strong>Settings → Custom data → Products → Add definition</strong>, with these exact namespace and keys. All are optional: a missing field is simply not shown.</p>
+<table>
+<thead>
+<tr>
+<th>Shown as</th>
+<th>Namespace and key</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Origin (for example "Serra da Mantiqueira")</td>
+<td><code>custom.origin</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Process (for example "Natural")</td>
+<td><code>custom.process</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Altitude (for example "1,350 m")</td>
+<td><code>custom.altitude</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Varietal (for example "Yellow Bourbon")</td>
+<td><code>custom.varietal</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Tasting notes</td>
+<td><code>custom.tasting_notes</code></td>
+<td>Single line text, list of values</td>
+</tr>
+<tr>
+<td>Roast level</td>
+<td><code>custom.roast_level</code></td>
+<td>Integer, 1 to 5</td>
+</tr>
+<tr>
+<td><strong>Roast date</strong> (freshness and stamp)</td>
+<td><code>custom.roast_date</code></td>
+<td>Date</td>
+</tr>
+<tr>
+<td>Lot (for example "Lot 07")</td>
+<td><code>custom.lot</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>SCA score (for example "86.5")</td>
+<td><code>custom.score</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Recommended brew method (for example "V60")</td>
+<td><code>custom.brew_method</code></td>
+<td>Single line text</td>
+</tr>
+<tr>
+<td>Roaster's brew note</td>
+<td><code>custom.brew_note</code></td>
+<td>Multi-line text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="freshness">Freshness</h3>
+<p>With a roast date, Crema shows where the coffee is in its life: <strong>resting</strong>, <strong>at its peak</strong> or <strong>still good</strong>, on a bar with today marked. It appears on product cards, on the product page and in the hero. The number of days in each phase is set in <strong>Theme settings → Coffee</strong> (default: 7 days resting, at its peak until day 28, good until day 45). The page works the phase out on the server, and a small script keeps it current on cached pages.</p>
+<h2 id="theme-settings">Theme settings</h2>
+<ul>
+<li><strong>Colors</strong>: five color schemes. Sections and blocks pick a scheme.</li>
+<li><strong>Typography</strong>: heading and body fonts, a bold heading option, heading and body size, and the face used for data (monospaced or the body font).</li>
+<li><strong>Layout</strong>: page width.</li>
+<li><strong>Animations</strong>: reveal on scroll and image parallax. Everything also respects the visitor's reduced motion setting.</li>
+<li><strong>Buttons and corners</strong>: radius for buttons, media and inputs.</li>
+<li><strong>Product cards</strong>: image ratio and fit, what shows above the title, tasting notes, roast meter, second image on hover, quick add and badges.</li>
+<li><strong>Coffee</strong>: freshness windows, the roast stamp, roast day, ship day, order cutoff day and hour, a pause date (holidays), and the roast note in the cart.</li>
+<li><strong>Cart</strong>: drawer or page, and cart notes.</li>
+<li><strong>Prices</strong>, <strong>Favicon</strong>, <strong>Social media</strong>, <strong>Search behavior</strong>.</li>
+</ul>
+<h2 id="home-page-sections">Home page sections</h2>
+<ul>
+<li><strong>Hero — kana poster</strong>: a word set huge across the stage (カフェ, "café" in Japanese, by default) with the selected lot's bag floating in front of it. Altitude, score, varietal and process are pinned to the bag with thin lines, a red seal shows the roast date, and a row of lot cards switches lots. Each lot is a block with a product and, optionally, a <strong>floating image</strong>: a PNG with a transparent background floats in front of the word; without it the product's first photo shows as a tilted print. The word, its outline (none, last character, all), its size, the seal text and the contour lines are editable. Katakana, hiragana and digits use the bundled Dela Gothic One face; other characters use the visitor's system font, so you can also write the name of your shop.</li>
+<li><strong>Hero — lot sheet</strong>: a headline beside one lot sheet over contour lines.</li>
+<li><strong>Hero</strong>: an editorial hero with one or two images.</li>
+<li><strong>Roast calendar</strong>: the coming days with the order deadline, roast day and ship day.</li>
+<li><strong>Statement</strong>: a large sentence with a side label. Under <strong>Background art</strong> you can add a <strong>sumi ink stroke</strong>: a wide dry-brush stroke drawn across the top of the section, a word knocked out of the ink, a red brush stroke under the emphasised words and a red seal beside the link. The stroke measures where the words sit and stays above them. Each <strong>stroke variation</strong> number draws a different stroke.</li>
+<li><strong>Product showcase</strong>: up to five tabs, each a collection.</li>
+<li><strong>Origin story</strong>: chapters about a farm or region, with details in label | value rows.</li>
+<li><strong>Editorial image with text</strong>, <strong>Collection list</strong>, <strong>Multicolumn</strong>, <strong>Testimonials</strong>, <strong>Email signup</strong>, <strong>Scrolling text</strong>, <strong>Custom Liquid</strong>.</li>
+<li><strong>Storefront</strong>: a photo of your shop with menu tickets floating over it and a live "open now" status worked out from the opening hours.</li>
+<li><strong>Café gallery</strong>: a strip of photos and a list of stores, each with its own menu link.</li>
+<li><strong>Café menu</strong>: a printed-style menu board.</li>
+<li><strong>Apps</strong>: a place for app blocks on any page.</li>
+</ul>
+<h2 id="product-page">Product page</h2>
+<p>Blocks in <strong>Product information</strong>: vendor, title, price, SKU, tasting notes, roast schedule, freshness, roast meter, origin details, variant picker, subscription planner, buy buttons, description, collapsible tabs, share, custom Liquid and app blocks.</p>
+<ul>
+<li><strong>Variant picker</strong>: pills or dropdowns. Option values with swatches (colors or images set in the product's options) show the swatch.</li>
+<li><strong>Subscription planner</strong>: the customer says how many cups a day and how they brew, and the planner suggests the bag size, the delivery interval and the number of bags from your selling plans, then applies them to the form. It reads the interval from the plan names ("Delivery every 2 weeks", "Monthly"). It needs a subscriptions app; without selling plans it stays hidden.</li>
+<li><strong>Brew guide</strong> (section): recipes for each method with a cup scaler and a timer that follows the steps. Write steps as <code>0:40 | Pour up to [150] ml</code>; the numbers in brackets scale with the cups. With <code>custom.brew_method</code> the matching recipe opens first.</li>
+<li><strong>Product recommendations</strong>: choose <strong>Related</strong> or <strong>Complementary</strong> products. Complementary products are set per product in the Search &amp; Discovery app.</li>
+</ul>
+<h2 id="cafe-pages-stores-and-menu">Café pages: stores and menu</h2>
+<ul>
+<li><strong>Stores</strong> (<code>page.stores</code> template): each store with photo, address, hours, directions and a menu link.</li>
+<li><strong>Menu</strong> (<code>page.menu</code> template): the first section, <strong>Menu: stores</strong>, lists your stores with address and hours and shows a store picker with country, city and store. Each <strong>Menu category</strong> section holds up to 50 items with photo, name, description, note, price and the stores that serve it. Switching store hides the items it does not serve. Link to a store's menu with <code>?store=store-name</code>. The <strong>Photo style</strong> can be cut-out (for PNGs without a background) or framed.</li>
+</ul>
+<p>To use them, create a page in <strong>Online Store → Pages</strong> and choose the template.</p>
+<h2 id="other-pages">Other pages</h2>
+<p>Collection pages with filters and sorting (including color swatch and image filters), search with predictive results, cart page and drawer, blog and article with comments, contact page, customer account pages, 404 page, password page and gift card page, all in the lot sheet style.</p>
+<h2 id="selling-features">Selling features</h2>
+<ul>
+<li><strong>Shop Pay Installments</strong> banner under the price.</li>
+<li><strong>Local pickup</strong>: availability for the selected variant, with every store and its pickup time.</li>
+<li><strong>Gift cards</strong>: the buyer can send a gift card straight to someone, with their name, a message and a send date.</li>
+<li><strong>B2B</strong>: quantity rules (minimum, maximum, increments) on the product page and in the cart, with steppers that follow them, and a volume pricing table.</li>
+<li><strong>Subscriptions</strong>: purchase options from any subscriptions app, plus the planner.</li>
+<li><strong>Dynamic checkout buttons</strong>, <strong>cart notes</strong>, <strong>discounts</strong>, <strong>unit prices</strong>, <strong>country and language selectors</strong>.</li>
+</ul>
+<h2 id="accessibility-and-performance">Accessibility and performance</h2>
+<ul>
+<li>Keyboard navigation with visible focus, a skip link, labelled controls and live regions for cart and variant updates.</li>
+<li>Motion respects the visitor's reduced motion setting and the theme's animation settings.</li>
+<li>Scripts load per section and only on pages that use them. The ink art and the hero poster draw on canvas after the page has loaded.</li>
+</ul>
+<h2 id="faq">FAQ</h2>
+<p><strong>The freshness bar does not show.</strong> The product needs a value in <code>custom.roast_date</code> (type Date).</p>
+<p><strong>The planner says it cannot read the interval.</strong> Name your selling plans with the interval, for example "Delivery every 2 weeks" or "Monthly".</p>
+<p><strong>The hero poster shows a photo instead of a floating bag.</strong> Add a PNG with a transparent background in the lot's <strong>Floating image</strong>.</p>
+<p><strong>The menu shows no items for a store.</strong> Check the store names in each item's <strong>Only at these stores</strong> field: they must match the store blocks in <strong>Menu: stores</strong>. Leave the field empty for items served everywhere.</p>
+<p><strong>Something else?</strong> Write to douglas41299@gmail.com with your store URL and a screenshot.</p>
+<h2 id="credits">Credits</h2>
+<ul>
+<li>Dela Gothic One, © The Dela Gothic Project Authors, SIL Open Font License 1.1 (https://openfontlicense.org). Bundled as a subset of kana, digits and a few kanji.</li>
+<li>Demo images are original 3D renders made for Crema.</li>
+</ul>
+  </main>
+</div>
+<footer><span>Crema · Shopify theme by DIGI STUDIO</span><span>douglas41299@gmail.com</span></footer>
+<script>
+  // wide tables scroll inside their own frame on small screens
+  document.querySelectorAll('main table').forEach(function (t) { var w = document.createElement('div'); w.className = 'table'; t.parentNode.insertBefore(w, t); w.appendChild(t); });
+</script>
+</body>
+</html>
